@@ -10,7 +10,7 @@ from routers.ws_router import router as ws_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()   # Jadvallarni avtomatik yaratish
+    await init_db()
     yield
 
 

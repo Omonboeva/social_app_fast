@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 
-# ---- USER ----
+
 class UserRegister(BaseModel):
     username: str
     email: EmailStr
@@ -23,17 +23,17 @@ class UserOut(BaseModel):
         from_attributes = True
 
 
-# ---- TOKEN ----
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
 
-# ---- CHAT ----
+
 class ChatCreate(BaseModel):
-    name: Optional[str] = None        # Guruh nomi
+    name: Optional[str] = None
     is_group: bool = False
-    member_ids: list[int]             # A'zolar ID lari
+    member_ids: list[int]
 
 class ChatOut(BaseModel):
     id: int
@@ -45,7 +45,7 @@ class ChatOut(BaseModel):
         from_attributes = True
 
 
-# ---- MESSAGE ----
+
 class MessageCreate(BaseModel):
     text: str
 

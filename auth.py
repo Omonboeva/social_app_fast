@@ -9,9 +9,9 @@ from sqlalchemy import select
 from database import get_db
 from models import User
 
-SECRET_KEY = "mysecretkey123"
+SECRET_KEY = "bd73916ae06dedb0496a2aa92c8aa553a3eff65560a44b2f137f41a84df2a18a"
 ALGORITHM = "HS256"
-EXPIRE_MINUTES = 60 * 24  # 1 kun
+EXPIRE_MINUTES = 60 * 24
 
 pwd = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login")

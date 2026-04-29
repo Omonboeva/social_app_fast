@@ -13,7 +13,7 @@ ALGORITHM = "HS256"
 
 router = APIRouter(tags=["WebSocket"])
 
-# Online ulanishlar: {chat_id: {user_id: WebSocket}}
+
 connections: dict[int, dict[int, WebSocket]] = {}
 
 
@@ -31,18 +31,12 @@ async def websocket_chat(
     chat_id: int,
     token: str = Query(...)
 ):
-    """
-    WebSocket ulanish: ws://localhost:8000/ws/{chat_id}?token=<JWT>
-
-    Yuborish: {"text": "Salom!"}
-    Qabul: {"sender": "ali", "text": "Salom!", "chat_id": 1}
-    """
     user_id = await get_user_id_from_token(token)
     if not user_id:
         await websocket.close(code=4001)
         return
 
-    # A'zoligini tekshirish
+
     async with AsyncSessionLocal() as db:
         result = await db.execute(
             select(ChatMember).where(ChatMember.chat_id == chat_id, ChatMember.user_id == user_id)
@@ -53,7 +47,7 @@ async def websocket_chat(
 
     await websocket.accept()
 
-    # Ulanishni saqlash
+
     if chat_id not in connections:
         connections[chat_id] = {}
     connections[chat_id][user_id] = websocket
@@ -71,7 +65,7 @@ async def websocket_chat(
             if not text:
                 continue
 
-            # Bazaga saqlash
+
             async with AsyncSessionLocal() as db:
                 from models import User
                 user_result = await db.execute(select(User).where(User.id == user_id))
@@ -82,7 +76,7 @@ async def websocket_chat(
                 await db.commit()
                 await db.refresh(msg)
 
-            # Chatdagi hammaga yuborish
+
             out = json.dumps({
                 "id": msg.id,
                 "chat_id": chat_id,

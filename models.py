@@ -22,7 +22,7 @@ class Chat(Base):
     __tablename__ = "chats"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=True)       # Guruh nomi (private uchun None)
+    name = Column(String(100), nullable=True)
     is_group = Column(Boolean, default=False)
     created_at = Column(DateTime, server_default=func.now())
 

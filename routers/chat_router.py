@@ -17,10 +17,10 @@ async def create_chat(data: ChatCreate, db: AsyncSession = Depends(get_db), user
     db.add(chat)
     await db.flush()
 
-    # Yaratuvchini admin sifatida qo'shish
+
     db.add(ChatMember(chat_id=chat.id, user_id=user.id, is_admin=True))
 
-    # Boshqa a'zolarni qo'shish
+
     for uid in data.member_ids:
         if uid != user.id:
             db.add(ChatMember(chat_id=chat.id, user_id=uid))
@@ -42,7 +42,6 @@ async def my_chats(db: AsyncSession = Depends(get_db), user: User = Depends(get_
 
 @router.get("/{chat_id}", response_model=ChatOut)
 async def get_chat(chat_id: int, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user)):
-    # A'zoligini tekshirish
     result = await db.execute(
         select(ChatMember).where(ChatMember.chat_id == chat_id, ChatMember.user_id == user.id)
     )
@@ -58,7 +57,6 @@ async def get_chat(chat_id: int, db: AsyncSession = Depends(get_db), user: User 
 
 @router.post("/{chat_id}/members/{user_id}")
 async def add_member(chat_id: int, user_id: int, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user)):
-    # Admin ekanligini tekshirish
     result = await db.execute(
         select(ChatMember).where(ChatMember.chat_id == chat_id, ChatMember.user_id == user.id, ChatMember.is_admin == True)
     )

@@ -12,7 +12,6 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register", response_model=UserOut)
 async def register(data: UserRegister, db: AsyncSession = Depends(get_db)):
-    # Mavjudligini tekshirish
     result = await db.execute(
         select(User).where(or_(User.username == data.username, User.email == data.email))
     )
